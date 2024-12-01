@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { getSong, getTrendingMusic, searchMusic } from "../services/yt-music";
+import { getAlbum, getArtist, getSong, getTrendingMusic, searchMusic } from "../services/yt-music";
 
 export const getTrending= async(_req:Request,res:Response)=>{
    try{
@@ -33,5 +33,31 @@ export const searchMusicHandeler = async (req: Request, res: Response ): Promise
         res.status(200).json(songResult)
     }catch(error){
         res.status(500).json({error:"failed to get song"})
+    }
+  }
+
+  export const getAlbumHandeler = async(req:Request, res:Response):Promise<void>=>{
+    const albumId= req.query.id as string;
+    if(!albumId){
+        res.status(400).json({error:"please Provide Album ID"})
+    }
+    try{
+        const albumResult = await getAlbum(albumId);
+        res.status(200).json(albumResult)
+    }catch(error){
+        res.status(500).json({error:"failed to get Album"})
+    }
+  }
+
+  export const getArtistHandeler = async(req:Request, res:Response):Promise<void>=>{
+    const artistId= req.query.id as string;
+    if(!artistId){
+        res.status(400).json({error:"please Provide Artist ID"})
+    }
+    try{
+        const artistResult = await getArtist(artistId);
+        res.status(200).json(artistResult)
+    }catch(error){
+        res.status(500).json({error:"failed to get Artist"})
     }
   }
